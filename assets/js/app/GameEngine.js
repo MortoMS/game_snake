@@ -1,6 +1,7 @@
 import Canvas from "./Services/Canvas.js";
 import Audio from "./Services/Audio.js";
 import Render from "./Services/Render.js";
+import _Object from "./Services/Object.js";
 
 export default class
 {   
@@ -10,9 +11,10 @@ export default class
 
     constructor()
     {
-        this.addService("canvas", new Canvas);
-        this.addService("audio", new Audio);
-        this.addService("render", new Render);
+        this.setService("canvas", new Canvas);
+        this.setService("audio", new Audio);
+        this.setService("render", new Render);
+        this.setService("object", new _Object);
 
         this.start();
     }
@@ -27,11 +29,19 @@ export default class
         clearInterval(this._loop);
     }
     
-    addService(name, object)
+    getService(name)
+    {
+        if (this._services.hasOwnProperty(name))
+        {
+            return this._services[name];
+        }
+    }
+
+    setService(name, object)
     {
         if (!this._services.hasOwnProperty(name))
         {
-            this._services[name] = object;
+            return this._services[name] = object;
         }
     }
 
@@ -52,7 +62,7 @@ export default class
     {
         for (let index in this._services)
         {
-            await this._services[index].execute();
+            await this._services[index]._execute();
         }
     }
 }
