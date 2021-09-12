@@ -1,18 +1,19 @@
-import Canvas from "./Canvas.js";
-import Audio from "./Audio.js";
+import Canvas from "./Services/Canvas.js";
+import Audio from "./Services/Audio.js";
+import Render from "./Services/Render.js";
 
 export default class
 {   
-    _canvas   = new Canvas;
-    _audio    = new Audio;
-    
-    _mapa     = []; 
     _loopTime = 16; 
     _loop     = null;
-    _objects  = {}; 
+    _services = {}; 
 
     constructor()
     {
+        this.addService("canvas", new Canvas);
+        this.addService("audio", new Audio);
+        this.addService("render", new Render);
+
         this.start();
     }
 
@@ -26,23 +27,32 @@ export default class
         clearInterval(this._loop);
     }
     
-    addObject()
+    addService(name, object)
     {
-        
-    }
-
-    _frame()
-    {
-        this._loop = setInterval(() => this._render(), this._loopTime);
-    }
-
-    _render()
-    {
-        let num_mapa = this._mapa.length;
-
-        for (let index = 0; index < num_mapa; index++)
+        if (!this._services.hasOwnProperty(name))
         {
-            this._mapa[index].render(this);
+            this._services[name] = object;
+        }
+    }
+
+    rmService(name)
+    {
+        if (this._services.hasOwnProperty(name))
+        {
+            delete this._services[name];
+        }
+    }
+
+    async _frame()
+    {
+        this._loop = setInterval(async () => await this._execute(), this._loopTime);
+    }
+
+    async _execute()
+    {
+        for (let index in this._services)
+        {
+            await this._services[index].execute();
         }
     }
 }

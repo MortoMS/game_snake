@@ -1,11 +1,15 @@
-export default class
+import Service from "./Service.js";
+
+export default class extends Service
 {
     el     = "#canvas";
     object = null;
     ctx    = null; 
 
-    constructor()
+    constructor(name = null)
     {
+        super((name != null) ? name : "canvas");
+
         this._createObjectCanvas();
         this._insertObjectCanvas();
     }
