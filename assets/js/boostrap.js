@@ -3,21 +3,68 @@ import Box from "./app/Objects/Box.js";
 
 const gameEngine = new GameEngine;
 
-let plate = gameEngine.getGear("object");
+let 
+    scene = gameEngine.getGear("object"),
+    snake = scene.setObject(1, new Box("Snake", 20, 20, "red"));
 
-plate.setObject(0, new Box("plate", 800, 600, "white"));
+scene.setObject(0, new Box("table", 800, 600, "white"));
 
-let box = plate.setObject(1, new Box("Box", 20, 20, "red"));
-
-box.update = async function()
+snake.inputSnake = function(gameEngine)
 {
-    let width = box.getWidth();
+    let 
+        input       = gameEngine.getGear("input"),
+        orientation = this.getComponent("orientation");
 
-    if (width > 800)
+    if (input.keyDown("ArrowUp"))
     {
-        width = 0;
+        this.direction = "Up";
     }
 
-    box.setWidth(++width);
+    if (input.keyDown("ArrowDown"))
+    {
+        this.direction = "Down";
+    }
+
+    if (input.keyDown("ArrowLeft"))
+    {
+        this.direction = "Left";
+    }
+
+    if (input.keyDown("ArrowRight"))
+    {
+        this.direction = "Right";
+    }
 }
 
+snake.continuousMovement = function()
+{
+    let 
+        orientation = this.getComponent("orientation")
+
+    if (!this.direction)
+    {
+        this.direction = null;
+    }
+
+    switch (this.direction)
+    {
+        case "Up":
+            orientation.setY(-1, true);
+            break;
+        case "Down":
+            orientation.setY(1, true);
+            break;
+        case "Left":
+            orientation.setX(-1, true);
+            break;
+        case "Right":
+            orientation.setX(1, true);
+            break;
+    }
+}
+
+snake.update = async function(gameEngine)
+{
+    snake.inputSnake(gameEngine);
+    snake.continuousMovement();
+}

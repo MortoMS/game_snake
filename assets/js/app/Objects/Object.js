@@ -15,6 +15,11 @@ export default class
         this.setComponent(new Orientation);
     }
 
+    orientation()
+    {
+        return this._componets['orientation'];
+    }
+
     getName()
     {
         return this._name;

@@ -17,6 +17,17 @@ export default class extends Gears
 
         if (!this._mapa[priority])
         {
+            if (priority > 0)
+            {
+                for (let num = 0; num < priority; num++)
+                {
+                    if (!this._mapa[num])
+                    {
+                        this._mapa[num] = [];
+                    }
+                }
+            }
+
             this._mapa[priority] = [];
         }
 

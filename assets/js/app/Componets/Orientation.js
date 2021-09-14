@@ -10,14 +10,28 @@ export default class extends Componet
         super((name != null) ? name : "orientation");
     }
 
-    setX(value)
-    {   
-        this._x = value;
+    setX(value, increment = false)
+    {  
+        if (increment)
+        {
+            this._x += value;
+        }
+        else
+        {
+            this._x = value;
+        }
     }
 
-    setY()
+    setY(value, increment = false)
     {
-        this._y = value;
+        if (increment)
+        {
+            this._y += value;
+        }
+        else
+        {
+            this._y = value;
+        }
     }
 
     getX()

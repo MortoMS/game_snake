@@ -1,5 +1,5 @@
 import Canvas from "./Gears/Canvas.js";
-import Inputs from "./Gears/Inputs.js";
+import Input from "./Gears/Input.js";
 import Audio from "./Gears/Audio.js";
 import Render from "./Gears/Render.js";
 import _Object from "./Gears/Object.js";
@@ -13,7 +13,7 @@ export default class
     constructor()
     {
         this.setGear("canvas", new Canvas);
-        this.setGear("inputs", new Inputs);
+        this.setGear("input", new Input);
         this.setGear("audio", new Audio);
         this.setGear("render", new Render);
         this.setGear("object", new _Object);
