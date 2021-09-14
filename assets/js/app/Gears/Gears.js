@@ -9,7 +9,7 @@ export default class
 
     async update(gameEngine)
     {
-
+        //
     }
 
     async _execute(gameEngine)

@@ -1,6 +1,6 @@
-import Service from "./Gears.js";
+import Gears from "./Gears.js";
 
-export default class extends Service
+export default class extends Gears
 {
     _name   = null;
     _mapa   = [];
@@ -13,14 +13,14 @@ export default class extends Service
 
     setObject(priority, object)
     {
-        let name = object.get("name");
+        let name = object.getName();
 
         if (!this._mapa[priority])
         {
             this._mapa[priority] = [];
         }
 
-        if (!this._object.hasOwnProperty(name))
+        if (this._object.hasOwnProperty(name))
         {
             return false;
         }
@@ -29,6 +29,8 @@ export default class extends Service
 
         let num = this._mapa[priority].push(object) - 2;
         object._index = num; 
+
+        return object;
     }
 
     getObject(name)
@@ -37,18 +39,20 @@ export default class extends Service
         {
             return this._object[name];    
         }
+
+        return null;
     }
 
     async update(gameEngine)
     {
         let num_mapa = this._mapa.length;
 
-        for (let index_1 = 0; index_1 < num_mapa; num_mapa++)
+        for (let index_1 = 0; index_1 < num_mapa; index_1++)
         {
             let num_object = this._mapa[index_1].length;
 
-            for (let index_2 = 0; index_2 < num_object; num_object++)
-            {
+            for (let index_2 = 0; index_2 < num_object; index_2++)
+            {   
                 await this._mapa[index_1][index_2]._execute(gameEngine);
             }
         }

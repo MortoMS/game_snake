@@ -4,14 +4,16 @@ export default class
 
     constructor(name = null)
     {
-        if (this._name == null && name == null)
-        {
-            this._name = `Component#${Math.floor(Math.random())}`;
-        }
+        this._name = (name == null) ? `Component#${Math.floor(Math.random())}` : name;
     }
 
-    async _execute()
+    async _execute(gameEngine)
     {
-        console.log(1);
+        //
+    }
+
+    getName()
+    {
+        return this._name;
     }
 }

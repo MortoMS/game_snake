@@ -1,6 +1,6 @@
-import Render from "./Render.js";
+import Orientation from "../Componets/Orientation.js";
 
-export default class extends Render
+export default class
 {
     _name      = null;
     _priority  = null;
@@ -9,10 +9,15 @@ export default class extends Render
 
     constructor(name = null)
     {
-        if (this._name == null && name == null)
-        {
-            this._name = `Object#${Math.floor(Math.random())}`;
-        }
+
+        this._name = (name == null) ? `Object#${Math.floor(Math.random())}` : name;
+        
+        this.setComponent(new Orientation);
+    }
+
+    getName()
+    {
+        return this._name;
     }
 
     getComponent(name)
@@ -23,15 +28,15 @@ export default class extends Render
         }
     }
 
-    setComponent(name, componet)
+    setComponent(componet)
     {
-        if (!this._componets.hasOwnProperty(name))
+        if (!this._componets.hasOwnProperty(componet.getName()))
         {
-            return this._componets[name] = componet;
+            return this._componets[componet.getName()] = componet;
         }
     }
 
-    rmComponent()
+    rmComponent(name)
     {
         if (!this._componets.hasOwnProperty(name))
         {
@@ -39,18 +44,24 @@ export default class extends Render
         }
     }
 
-    async update()
+    async update(gameEngine)
     {
+        //
+    }
 
+    async _update(gameEngine)
+    {
+        //
     }
 
     async _execute(gameEngine)
     {
-        await this.update();
+        await this.update(gameEngine);
+        await this._update(gameEngine); 
 
         for (let index in this._componets)
         {
-            await this._componets[index]._execute();
+            await this._componets[index]._execute(gameEngine);
         }
     }
 } 

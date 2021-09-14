@@ -1,20 +1,22 @@
 import Canvas from "./Gears/Canvas.js";
+import Inputs from "./Gears/Inputs.js";
 import Audio from "./Gears/Audio.js";
 import Render from "./Gears/Render.js";
 import _Object from "./Gears/Object.js";
 
 export default class
 {   
-    _loopTime = 16; 
+    _loopTime = 16.3;
     _loop     = null;
     _gears = {}; 
 
     constructor()
     {
-        this.setService("canvas", new Canvas);
-        this.setService("audio", new Audio);
-        this.setService("render", new Render);
-        this.setService("object", new _Object);
+        this.setGear("canvas", new Canvas);
+        this.setGear("inputs", new Inputs);
+        this.setGear("audio", new Audio);
+        this.setGear("render", new Render);
+        this.setGear("object", new _Object);
 
         this.start();
     }
@@ -29,7 +31,7 @@ export default class
         clearInterval(this._loop);
     }
     
-    getService(name)
+    getGear(name)
     {
         if (this._gears.hasOwnProperty(name))
         {
@@ -37,7 +39,7 @@ export default class
         }
     }
 
-    setService(name, object)
+    setGear(name, object)
     {
         if (!this._gears.hasOwnProperty(name))
         {
@@ -45,7 +47,7 @@ export default class
         }
     }
 
-    rmService(name)
+    rmGear(name)
     {
         if (this._gears.hasOwnProperty(name))
         {
@@ -53,7 +55,12 @@ export default class
         }
     }
 
-    async _frame()
+    getTimeframe()
+    {
+        return this._loopTime;
+    }
+
+    _frame()
     {
         this._loop = setInterval(async () => await this._execute(), this._loopTime);
     }
@@ -62,7 +69,7 @@ export default class
     {
         for (let index in this._gears)
         {
-            await this._gears[index]._execute();
+            await this._gears[index]._execute(this);
         }
     }
 }

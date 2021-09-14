@@ -1,26 +1,57 @@
-export default class
+import Object from "../Objects/Object.js";
+
+export default class extends Object
 {
-    _num = 0;
+    _width  = 0;
+    _height = 0;
+    _color  = null; 
 
-    constructor(name = null)
+    constructor(name = null, width = 0, height = 0, color = null)
     {
-        super();
+        super(name);
 
-        this._num = 2;
+        this._width  = width;
+        this._height = height;
+        this._color  = color;
     }
 
-    get(name)
+    getWidth()
     {
-        if (this.hasOwnProperty(name))
-        {
-            return this[name];
-        }
-
-        return null;
+        return this._width;
     }
 
-    async update()
+    setWidth(value)
     {
-        console.log(this._num);
+        this._width = value;
+    }
+
+    getHeighth()
+    {
+        return this._height;
+    }
+
+    setHeight(value)
+    {
+        this._height = value;
+    }
+
+    getColor()
+    {
+        return this._color;
+    }
+
+    setColor(value)
+    {
+        this._color = value;
+    }
+
+    async _update(gameEngine)
+    {
+        let 
+            ctx         = gameEngine.getGear("canvas").ctx, 
+            orientation = this.getComponent("orientation");
+
+        ctx.fillStyle = this._color;
+        ctx.fillRect(orientation.getX(), orientation.getY(), this._width, this._height);
     }
 }
