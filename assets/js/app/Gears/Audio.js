@@ -1,4 +1,4 @@
-import Service from "./Service.js";
+import Service from "./Gears.js";
 
 export default class extends Service
 { 

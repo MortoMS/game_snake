@@ -1,13 +1,13 @@
-import Canvas from "./Services/Canvas.js";
-import Audio from "./Services/Audio.js";
-import Render from "./Services/Render.js";
-import _Object from "./Services/Object.js";
+import Canvas from "./Gears/Canvas.js";
+import Audio from "./Gears/Audio.js";
+import Render from "./Gears/Render.js";
+import _Object from "./Gears/Object.js";
 
 export default class
 {   
     _loopTime = 16; 
     _loop     = null;
-    _services = {}; 
+    _gears = {}; 
 
     constructor()
     {
@@ -31,25 +31,25 @@ export default class
     
     getService(name)
     {
-        if (this._services.hasOwnProperty(name))
+        if (this._gears.hasOwnProperty(name))
         {
-            return this._services[name];
+            return this._gears[name];
         }
     }
 
     setService(name, object)
     {
-        if (!this._services.hasOwnProperty(name))
+        if (!this._gears.hasOwnProperty(name))
         {
-            return this._services[name] = object;
+            return this._gears[name] = object;
         }
     }
 
     rmService(name)
     {
-        if (this._services.hasOwnProperty(name))
+        if (this._gears.hasOwnProperty(name))
         {
-            delete this._services[name];
+            delete this._gears[name];
         }
     }
 
@@ -60,9 +60,9 @@ export default class
 
     async _execute()
     {
-        for (let index in this._services)
+        for (let index in this._gears)
         {
-            await this._services[index]._execute();
+            await this._gears[index]._execute();
         }
     }
 }
