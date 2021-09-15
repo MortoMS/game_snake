@@ -15,13 +15,13 @@ export default class extends Gears
     {
         let name = object.getName();
 
-        if (!this._mapa[priority])
+        if (typeof this._mapa[priority] != "object")
         {
             if (priority > 0)
             {
                 for (let num = 0; num < priority; num++)
                 {
-                    if (!this._mapa[num])
+                    if (typeof this._mapa[num] != "object")
                     {
                         this._mapa[num] = [];
                     }
@@ -31,15 +31,20 @@ export default class extends Gears
             this._mapa[priority] = [];
         }
 
-        if (this._object.hasOwnProperty(name))
+        if (this._object.hasOwnProperty(name) && this._object._delete == false)
         {
             return false;
+        }
+        else if (this._object.hasOwnProperty(name) && this._object._delete == true)
+        {
+            delete this._object[name];
         }
 
         this._object[name] = object;
 
-        let num = this._mapa[priority].push(object) - 2;
-        object._index = num; 
+        let num          = this._mapa[priority].push(object) - 1;
+        object._index    = num; 
+        object._priority = priority;
 
         return object;
     }
@@ -54,6 +59,14 @@ export default class extends Gears
         return null;
     }
 
+    rmObject(name)
+    {
+        if (this._object.hasOwnProperty(name))
+        {   
+            this._object[name].delete();
+        }
+    }
+
     async update(gameEngine)
     {
         let num_mapa = this._mapa.length;
@@ -64,7 +77,21 @@ export default class extends Gears
 
             for (let index_2 = 0; index_2 < num_object; index_2++)
             {   
-                await this._mapa[index_1][index_2]._execute(gameEngine);
+                let object = this._mapa[index_1][index_2];
+
+                if (typeof object == "object")
+                {
+                    if (object._delete == false)
+                    {
+                        await object._execute(gameEngine);
+                    }
+                    else
+                    {
+                        delete this._object[object.name];
+                        this._mapa[index_1].splice(index_2, 1);
+                        num_object--;
+                    }
+                }
             }
         }
     }

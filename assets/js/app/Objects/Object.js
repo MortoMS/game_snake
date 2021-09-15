@@ -5,11 +5,11 @@ export default class
     _name      = null;
     _priority  = null;
     _index     = null;
+    _delete    = false;
     _componets = {};
 
     constructor(name = null)
     {
-
         this._name = (name == null) ? `Object#${Math.floor(Math.random())}` : name;
         
         this.setComponent(new Orientation);
@@ -68,5 +68,14 @@ export default class
         {
             await this._componets[index]._execute(gameEngine);
         }
+    }
+
+    delete()
+    {
+        this._delete    = true;
+        this.update     = async function(){}
+        this._update    = async function(){}
+        this.__execute  = async function(){}
+        this._componets = {};
     }
 } 

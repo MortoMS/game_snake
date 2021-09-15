@@ -47,11 +47,19 @@ export default class extends Object
 
     async _update(gameEngine)
     {
-        let 
-            ctx         = gameEngine.getGear("canvas").ctx, 
-            orientation = this.getComponent("orientation");
+        if (!this._delete)
+        {   
+            let 
+                ctx         = gameEngine.getGear("canvas").ctx, 
+                orientation = this.getComponent("orientation");
 
-        ctx.fillStyle = this._color;
-        ctx.fillRect(orientation.getX(), orientation.getY(), this._width, this._height);
+            ctx.fillStyle = this._color;
+            ctx.fillRect(orientation.getX(), orientation.getY(), this._width, this._height);
+        }
+    }
+
+    forceRender(gameEngine)
+    {
+        this._update(gameEngine);
     }
 }

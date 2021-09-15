@@ -6,7 +6,7 @@ import _Object from "./Gears/Object.js";
 
 export default class
 {   
-    _loopTime = 16.3;
+    _loopTime = 16;
     _loop     = null;
     _gears = {}; 
 
@@ -23,6 +23,11 @@ export default class
 
     start()
     {
+        if (this._loop != null)
+        {
+            this.stop();
+        }
+
         this._frame();
     }
 
