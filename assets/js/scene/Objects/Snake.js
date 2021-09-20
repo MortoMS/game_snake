@@ -6,13 +6,14 @@ export default function ()
 {
     let 
         scene = gameEngine.getGear("object"),
-        snake = new Box("Snake", 20, 20, "red"),
+        snake = new Box("Snake", 20, 20, "blue"),
         delay = 128;
 
     snake.direction = "Up";
     snake.food      = 0;
     snake.time      = 0;
     snake.num       = 0;
+    snake.move      = false; 
 
     snake.orientation().setX(380);
     snake.orientation().setY(280);
@@ -24,7 +25,7 @@ export default function ()
     {
         let name = object.getName();
 
-        if (name.indexOf("Trail_") >= 0)
+        if (name.indexOf("Trail_") >= 0 && object.num > 0)
         {
             console.log("Fim de jogo")
             gameEngine.stop();
@@ -51,31 +52,23 @@ export default function ()
         let input = gameEngine.getGear("input");
 
         if (input.keyDown("ArrowUp")) {
+            this.move = true;
             this.direction = "Up";
         }
 
         if (input.keyDown("ArrowDown")) {
+            this.move = true;
             this.direction = "Down";
         }
 
         if (input.keyDown("ArrowLeft")) {
+            this.move = true;
             this.direction = "Left";
         }
 
         if (input.keyDown("ArrowRight")) {
+            this.move = true;
             this.direction = "Right";
-        }
-
-        if (input.keyDown("1")) {
-            this.food++;
-        }
-
-        if (input.keyDown("2")) {
-            this.food--;
-        }
-
-        if (input.keyDown("3")) {
-            gameEngine.stop();
         }
     }
     
@@ -87,22 +80,30 @@ export default function ()
         {
             if (this.food > 0)
             {
-                let trail = scene.setObject(new Box("Trail_" + this.num, 20, 20, "blue"), 2);
+                let trail = new Box("Trail_" + this.num, 20, 20, "blue");
 
-                trail.num = this.food - 1;
-                trail.time = 0;
+                scene.setObject(trail, 2);
+
                 trail.setComponent(new Body(null, 0, 0, 20, 20));
+                trail.num = this.food;
+                trail.time = 0;
 
-                trail.update = async function ()
+                trail.update = async function()
                 {
                     if (this.time >= delay)
                     {
-                        if (this.num <= 0)
+                        this.num--;
+
+                        if (this.num == 0) 
+                        {
+                            this.setColor("white");
+                        }
+                        
+                        if (this.num < 0)
                         {
                             await scene.rmObject(this.getName());
                         }
-                        
-                        this.num--;
+
                         this.time = 0;
                     }
 
@@ -139,7 +140,11 @@ export default function ()
     snake.update = async function ()
     {
         await snake.inputSnake();
-        await snake.continuousMovement();
+        
+        if (this.move)
+        {
+            await snake.continuousMovement();
+        }
     }
 
     return snake;
