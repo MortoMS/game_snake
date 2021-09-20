@@ -11,7 +11,7 @@ export default class extends Gears
         super((name != null) ? name : "Object");
     }
 
-    setObject(priority, object)
+    setObject(object, priority = 0)
     {
         let name = object.getName();
 
@@ -49,6 +49,11 @@ export default class extends Gears
         return object;
     }
 
+    getObjects()
+    {
+        return this._object;
+    }
+
     getObject(name)
     {
         if (this._object.hasOwnProperty(name))
@@ -67,7 +72,7 @@ export default class extends Gears
         }
     }
 
-    async update(gameEngine)
+    async update()
     {
         let num_mapa = this._mapa.length;
 
@@ -83,7 +88,7 @@ export default class extends Gears
                 {
                     if (object._delete == false)
                     {
-                        await object._execute(gameEngine);
+                        await object._execute();
                     }
                     else
                     {

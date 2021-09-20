@@ -25,6 +25,11 @@ export default class
         return this._name;
     }
 
+    hasComponent(name)
+    {
+        return (this._componets.hasOwnProperty(name)) ? true : false;
+    }
+
     getComponent(name)
     {
         if (this._componets.hasOwnProperty(name))
@@ -49,24 +54,29 @@ export default class
         }
     }
 
-    async update(gameEngine)
+    getPriority()
+    {
+        return this._priority;
+    }
+
+    async update()
     {
         //
     }
 
-    async _update(gameEngine)
+    async _update()
     {
         //
     }
 
-    async _execute(gameEngine)
+    async _execute()
     {
-        await this.update(gameEngine);
-        await this._update(gameEngine); 
+        await this.update();
+        await this._update(); 
 
         for (let index in this._componets)
         {
-            await this._componets[index]._execute(gameEngine);
+            await this._componets[index]._execute(this);
         }
     }
 

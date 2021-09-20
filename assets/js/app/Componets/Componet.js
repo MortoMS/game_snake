@@ -7,7 +7,7 @@ export default class
         this._name = (name == null) ? `Component#${Math.floor(Math.random())}` : name;
     }
 
-    async _execute(gameEngine)
+    async _execute()
     {
         //
     }

@@ -7,13 +7,13 @@ export default class
         this._name = name;
     }
 
-    async update(gameEngine)
+    async update()
     {
         //
     }
 
-    async _execute(gameEngine)
+    async _execute()
     {
-        await this.update(gameEngine);
+        await this.update();
     }
 }

@@ -45,7 +45,7 @@ export default class extends Object
         this._color = value;
     }
 
-    async _update(gameEngine)
+    async _update()
     {
         if (!this._delete)
         {   
@@ -58,8 +58,8 @@ export default class extends Object
         }
     }
 
-    forceRender(gameEngine)
+    async forceRender()
     {
-        this._update(gameEngine);
+        await this._update();
     }
 }
